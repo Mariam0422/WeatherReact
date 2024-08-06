@@ -1,0 +1,30 @@
+*{
+   margin: 0;
+   padding: 0;
+}
+.weather{
+   display: flex;
+   flex-wrap: wrap;
+   gap: 10px;
+   justify-content: center;
+   height: 200px;
+   align-items: center;
+   
+}
+.forecast{
+   border: 1px solid rgb(2, 2, 231);
+   padding: 10px;
+   border-radius: 20px;
+   color: rgb(2, 2, 231);
+}
+.forecast:hover{
+   box-shadow: 5px 5px 2px #65656533;
+}
+.page{
+   margin-top: 100px;
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
+   gap: 30px;
+}
