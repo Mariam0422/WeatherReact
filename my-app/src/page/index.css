@@ -16,6 +16,7 @@
    padding: 10px;
    border-radius: 20px;
    color: rgb(2, 2, 231);
+  
 }
 .forecast:hover{
    box-shadow: 5px 5px 2px #65656533;
