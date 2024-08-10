@@ -8,12 +8,13 @@ import Details from './details';
 
 
 const App = () => {
+  
 
   const route = createBrowserRouter(
     createRoutesFromElements(
       <>
       <Route path='/' element={<WeatherComponent/>}/>
-      <Route path='details' element={<Details/>}/>
+      <Route path='details/:name/:date' element={<Details/>}/>
       </>
     )
   )
