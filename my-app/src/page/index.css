@@ -7,25 +7,26 @@
    flex-wrap: wrap;
    gap: 10px;
    justify-content: center;
-   height: 200px;
    align-items: center;
    
 }
 .forecast{
-   border: 1px solid rgb(2, 2, 231);
    padding: 10px;
    border-radius: 20px;
-   color: rgb(2, 2, 231);
-  
-}
+   background-color: #f4f1f154;
+   color: black;
+   text-align: center;
+   
+} 
 .forecast:hover{
-   box-shadow: 5px 5px 2px #65656533;
+   box-shadow: 6px 7px 5px #12121233;
 }
 .page{
-   margin-top: 100px;
    display: flex;
    flex-direction: column;
    justify-content: center;
    align-items: center;
    gap: 30px;
+   padding: 20px;
+ 
 }

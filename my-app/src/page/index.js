@@ -91,11 +91,11 @@ const WeatherComponent = () => {
    
     return (
       <div className='page'>
-        <h1 style={{color: "rgb(2, 2, 231)"}}>5-Day Weather Forecast</h1>      
+        <h1>5 Day Weather Forecast</h1>      
         <div>        
           <Form layout='inline'>  
-          <Form.Item  label="Enter city name"> 
-          <Input style={{width: "200px"}}
+          <Form.Item > 
+          <Input style={{backgroundColor: "#dadada93"}}
           type="text"
           value={city}
           onChange={(e) => {
@@ -107,8 +107,7 @@ const WeatherComponent = () => {
           <Form.Item>
             <Button
             onClick={hadleSearch}
-            style={{backgroundColor: "rgb(2, 2, 231)", color:"white"}}          
-            >Search</Button>
+            style={{backgroundColor: "#dadada93"}}>Search</Button>
           </Form.Item>
           </Form>       
         </div>      
@@ -120,7 +119,7 @@ const WeatherComponent = () => {
               <Link to={`/details/${forecast.name}/${forecast.date}`} key={index} style={{textDecoration: "none"}}>
               <div key={index} className='forecast'>
                 { console.log(forecast, "forecast")  }
-                <h4>Date: {forecast.date}</h4>             
+                <h3> {forecast.date}</h3>             
                 <img src={`https://openweathermap.org/img/wn/${forecast.weather}@2x.png`}  alt='icon' style={{width: "150px"}}/>
                 <p>Max Temp: {forecast.maxTemp}°C</p>
                 <p>Min Temp: {forecast.minTemp}°C</p>
