@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {Input, Form, Button} from 'antd';
 import { API_KEY } from "../core/constant";
 import { Link } from 'react-router-dom';   
@@ -9,10 +9,33 @@ const WeatherComponent = () => {
     const [city, setCity] = useState(''); 
     const [query, setQuery] = useState('');
     const [error, setError] = useState(null);
+    const [currentLocation, setcurrentLocation] = useState(null);
+
   
-  
+  useEffect(() => {
+   const getLocation =  () => {
+   navigator.geolocation.getCurrentPosition( async(position) => {
+    const lat = (position.coords.latitude).toFixed(2);
+    const lon = (position.coords.longitude).toFixed(2);
+    try{
+      const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`);
+        const geolocationData = await response.json();    
+        const dailySummaries = calculateDailySummaries(geolocationData.list, geolocationData);   
+        dailySummaries.forEach((item) => setQuery(item.name));       
+        setError(null)
+        setcurrentLocation(dailySummaries);       
+      } catch (error) {
+        console.log('Fetch error:', error);
+        setcurrentLocation(null);  
+        setError(error.message)        
+      } 
+   })
+   }
+   getLocation();
+  }, [])
+
       const fetchWeatherData = async () => {
-               try {
+          try {
           const response = await fetch(
             `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}&units=metric`
           );
@@ -23,21 +46,21 @@ const WeatherComponent = () => {
           else{
             throw new Error("An unexpected error occurred");
           }
-                  }
+          }
           const data = await response.json();    
-         console.log(data)
-          const dailySummaries = calculateDailySummaries(data.list, data);          
+          console.log(data)
+          const dailySummaries = calculateDailySummaries(data.list, data);           
           setWeatherData(dailySummaries);          
-          setError(null)
-
-        } catch (error) {
-          console.log('Fetch error:', error);
-          setWeatherData("");  
-          setError(error.message)        
+          setError(null); 
+        } catch (error) {          
+          setWeatherData(null);  
+          setError(error.message);
+          setcurrentLocation(null);
+          setQuery("");      
         }
       };  
    
-    
+
     
     const calculateDailySummaries = (list, data) => {     
        const dailyData = {};
@@ -84,35 +107,42 @@ const WeatherComponent = () => {
       }));
   
     };
-    const hadleSearch = () => {
+    const handleSearch = () => {
       setQuery(city);
       fetchWeatherData();
     }
-   
+
+
     return (
       <div className='page'>
-        <h1>5 Day Weather Forecast</h1>      
+            
         <div>        
           <Form layout='inline'>  
           <Form.Item > 
-          <Input style={{backgroundColor: "#dadada93"}}
+          <Input style={{backgroundColor: "#dadada93", width: "950px"}}
           type="text"
           value={city}
           onChange={(e) => {
             setCity(e.target.value)
-          }}          
+          }}    
+          onKeyDown={(e) => {
+            if(e.key === 'Enter'){
+              handleSearch();
+            }
+          }}      
           placeholder="Enter city name"
         />  
           </Form.Item>   
           <Form.Item>
             <Button
-            onClick={hadleSearch}
+            onClick={handleSearch}
             style={{backgroundColor: "#dadada93"}}>Search</Button>
           </Form.Item>
           </Form>       
         </div>      
         {error && <h4 style={{color: "red"}}>{error}</h4>}
-        {query ? <h2>{query.toUpperCase()}</h2> : ""}
+        <h3>5 Day Weather Forecast</h3> 
+        {query ? <h1>{query.toUpperCase()}</h1> : ""}
         {weatherData ? ( 
            <div className='weather'>            
             {weatherData.map((forecast, index) => (                         
@@ -128,7 +158,23 @@ const WeatherComponent = () => {
             ))}
           </div>
           
-        ) : ""}     
+        ) : currentLocation ? (
+           <div className='weather'>
+             {currentLocation.map((forecast, index) => (                                                   
+              <Link to={`/details/${forecast.name}/${forecast.date}`} key={index} style={{textDecoration: "none"}}>
+              <div key={index} className='forecast'>
+                { console.log(forecast, "forecast")  }
+                <h3> {forecast.date}</h3>             
+                <img src={`https://openweathermap.org/img/wn/${forecast.weather}@2x.png`}  alt='icon' style={{width: "150px"}}/>
+                <p>Max Temp: {forecast.maxTemp}°C</p>
+                <p>Min Temp: {forecast.minTemp}°C</p>
+              </div>             
+              </Link>               
+            ))}
+               
+           </div>
+        ) : "Loading..."}     
+         
       </div>
       
     );

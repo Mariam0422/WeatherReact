@@ -1,17 +1,19 @@
 .main{
     display: flex;
     flex-wrap: wrap;   
-    gap: 10px;
+    gap: 20px;
     justify-content: center;
     width: 60%;
-    padding: 10px;
+    padding: 50px 10px 50px 10px;
     background-image: url("../core/img/weather-backgrounds.jpg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    background-color: rgba(65, 65, 65, 0.5);
+    background-color: rgba(66, 60, 60, 0.867);
     background-blend-mode: overlay;
     box-shadow: 5px 6px 8px grey;
+    /* background-color: rgba(152, 152, 152, 0.447); */
+    border-radius: 20px;
 }
 .separateForecast{
    padding: 10px;
